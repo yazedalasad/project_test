@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="box">
+        <div class="form">
+            <h2>Login Form</h2>
+            <form id="loginForm">
+                <div class="inputbox">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="inputbox">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="inputbox">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" required>
+                </div>
+                <input type="submit" value="Submit" class="sub">
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5mbtcA0Z7dTZ33K-F6ArrON7INXNXi4c",
+  authDomain: "e-karaouine.firebaseapp.com",
+  databaseURL: "https://e-karaouine-default-rtdb.firebaseio.com",
+  projectId: "e-karaouine",
+  storageBucket: "e-karaouine.appspot.com",
+  messagingSenderId: "540602084562",
+  appId: "1:540602084562:web:b9009921a91f3c6204110b"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.getDatabase(app);
+
+        // Form submission
+        document.getElementById("loginForm").addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            if (username && email && phone) {
+                // Save data to Firebase
+                firebase.set(firebase.ref(db, 'users/' + username), {
+                    username: username,
+                    email: email,
+                    phoneNumber: phone
+                })
+                .then(() => {
+                    alert("Login successful!");
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+            } else {
+                alert("Please fill in all fields.");
+            }
+        });
+    </script>
+</body>
+</html>
